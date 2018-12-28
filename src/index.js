@@ -1,4 +1,3 @@
-import view from './js/view';
+import init from './js';
 
-console.log('Hello, world');
-view();
+init();

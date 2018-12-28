@@ -5,7 +5,19 @@
     <title>Погода в городах</title>
   </head>
   <body>
-    <button id="request-button">Запросить</button>
+    <form>
+      <input type="text" class="cityName" placeholder="Input city name">
+      <button id="request-button" type="submit">Add city</button>
+    </form>
+    <div class="autocomplete-list"></div>
+    <div class="city-list"></div>
+
+    <template id="autocomlete-template" style="display: none">
+      <div>
+        <a href="#" class="autocomlete__link"></a>
+        <span class="autocomplete__country"></span>
+      </div>
+    </template>
     <script src="dist/main.js"></script>
   </body>
 </html>
