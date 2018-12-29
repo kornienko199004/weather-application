@@ -1,18 +1,24 @@
-import requestToApi from './requestToApi';
+export const renderCityList = (data) => {
+  const list = document.querySelector('.city-list');
+  const autocompleteTemplateElement = document.getElementById('city-list-template').content;
+  const fragment = document.createDocumentFragment();
 
-export default () => {
-  const button = document.getElementById('request-button');
-
-  button.addEventListener('click', (e) => {
-    e.preventDefault();
-    const inputValue = document.querySelector('.cityName').value;
-    console.log(inputValue);
-    requestToApi(inputValue)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  data.forEach(({ cityName, country, weather }) => {
+    const node = autocompleteTemplateElement.cloneNode(true);
+    const name = node.querySelector('.city__cityName');
+    const cityCountry = node.querySelector('.city__country');
+    const airTemperature = node.querySelector('.city__temperature');
+    const weatherDescription = node.querySelector('.city__description');
+    name.textContent = cityName;
+    cityCountry.textContent = country;
+    airTemperature.textContent = weather.temperature;
+    weatherDescription.textContent = weather.description;
+    fragment.appendChild(node);
   });
+
+  list.appendChild(fragment);
+};
+
+export const renderAutocompleteList = (data) => {
+
 };

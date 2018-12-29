@@ -1,12 +1,16 @@
 {
   "name": "weather",
   "version": "0.0.1",
-  "description": "",
+  "description": "Weather application",
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --mode development --open --host 0.0.0.0",
     "build": "webpack --mode production",
     "eslint": "eslint --fix ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kornienko199004/weather-application.git"
   },
   "author": "",
   "license": "ISC",
@@ -30,6 +34,8 @@
     "webpack-dev-server": "^3.1.11"
   },
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "lodash": "^4.17.11",
+    "melanke-watchjs": "^1.5.0"
   }
 }

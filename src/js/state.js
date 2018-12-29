@@ -1,3 +1,6 @@
+import _ from 'lodash';
+import parser from './parser';
+
 export default class State {
   constructor() {
     this.cityNameInput = 'empty';
@@ -14,7 +17,7 @@ export default class State {
       },
     }
     */
-    this.cityData = new Map();
+    this.cityData = [];
     /*
     ** формат cityNames [
       {
@@ -36,22 +39,24 @@ export default class State {
   }
 
   addCity(res) {
+    console.log(res);
     const parseredObject = parser(res);
-    const { name, country, weather } = parseredObject;
+    const { cityName, country } = parseredObject;
+    const cityId = _.uniqueId();
 
-    this.addCityData({
-      cityName: name,
-      country,
-      weather,
-    });
+    this.addCityData(cityId, parseredObject);
+    this.addCityName({ cityName, country, id: cityId });
+
+    console.log('CityData');
+    console.log(this.getCityData());
   }
 
-  addCityData(data) {
-    this.cityData.set(this.uniqKey, data);
+  addCityData(id, data) {
+    this.cityData = [...this.cityData, { ...data, id }];
   }
 
-  addCityName(name, country) {
-    this.cityNames = [...this.cityNames, { name, country }];
+  addCityName(data) {
+    this.cityNames = [...this.cityNames, data];
   }
 
   fillAutocompleteList(list) {

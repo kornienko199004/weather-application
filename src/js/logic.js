@@ -4,6 +4,7 @@ const makeRequest = (state, cityName) => {
   requestToApi(cityName)
     .then((response) => {
       state.addCity(response);
+      console.log(response);
     })
     .catch((err) => {
       console.log(err);

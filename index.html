@@ -10,13 +10,27 @@
       <button id="request-button" type="submit">Add city</button>
     </form>
     <div class="autocomplete-list"></div>
-    <div class="city-list"></div>
+    <ul class="city-list"></ul>
 
     <template id="autocomlete-template" style="display: none">
       <div>
         <a href="#" class="autocomlete__link"></a>
         <span class="autocomplete__country"></span>
       </div>
+    </template>
+
+    <template id="city-list-template" style="display: none">
+      <li class="city-list__item city">
+        <div class="city__wrapper">
+          <p class="city__cityName"></p>
+          <p class="city__country"></p>
+        </div>
+        <div class="city__wrapper">
+          <p class="city__temperature"></p>
+          <p class="city__description"></p>
+        </div>
+        <button class="city__close">Удалить</button>
+      </li>
     </template>
     <script src="dist/main.js"></script>
   </body>
