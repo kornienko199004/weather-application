@@ -3,7 +3,8 @@ import parser from './parser';
 
 export default class State {
   constructor() {
-    this.cityNameInput = 'empty';
+    this.cityNameInputStatus = 'empty';
+    this.autocompleteStatus = 'empty';
     /*
     ** формат cityData {
       0: {
@@ -36,6 +37,7 @@ export default class State {
     ]
     */
     this.autocompleteList = [];
+    this.selectedAutocompleteLinkNumber = -1;
   }
 
   addCity(res) {
@@ -59,8 +61,16 @@ export default class State {
     this.cityNames = [...this.cityNames, data];
   }
 
-  fillAutocompleteList(list) {
+  setAutocompleteList(list) {
     this.autocompleteList = list;
+  }
+
+  setCityNameInputStatus(value) {
+    this.cityNameInputStatus = value;
+  }
+
+  setSelectedAutocompleteLinkNumber(value) {
+    this.selectedAutocompleteLinkNumber = value;
   }
 
   getCityData() {
@@ -69,5 +79,13 @@ export default class State {
 
   getCityNames() {
     return this.cityNames;
+  }
+
+  getAutocompleteList() {
+    return this.autocompleteList;
+  }
+
+  getCityNameInputStatus() {
+    return this.cityNameInputStatus;
   }
 }

@@ -1,4 +1,4 @@
-import { addFormSubmitListener, addInputListener } from './logic';
+import { addFormSubmitListener, addInputListener, addAutocompleteLinksEvents } from './logic';
 import State from './state';
 import watch from './watch';
 import parserJson from './parserJson';
@@ -8,4 +8,5 @@ export default () => {
   watch(data);
   addFormSubmitListener(data);
   addInputListener(data, parserJson());
+  addAutocompleteLinksEvents(data);
 };
