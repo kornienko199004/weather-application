@@ -5,11 +5,13 @@
     <title>Погода в городах</title>
   </head>
   <body>
-    <form>
-      <input type="text" class="cityName" placeholder="Input city name">
-      <button id="request-button" type="submit">Add city</button>
-    </form>
-    <ul class="autocomplete-list"></ul>
+    <div class="jumbotron w-50 container d-flex justify-content-center">
+      <form class="form-group w-75">
+        <input type="text" class="cityName w-75" placeholder="Input city name">
+        <button class="btn btn-primary" id="request-button" type="submit">Add city</button>
+        <ul class="autocomplete-list"></ul>
+      </form>
+    </div>
     <ul class="city-list"></ul>
 
     <template id="autocomlete-template" style="display: none">

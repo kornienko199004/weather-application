@@ -1,14 +1,19 @@
 import requestToApi from './requestToApi';
 
 const makeRequest = (state, cityName) => {
-  requestToApi(cityName)
-    .then((response) => {
-      state.addCity(response);
-      console.log(response);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  if (!state.cityNamesContains(cityName)) {
+    requestToApi(cityName)
+      .then((response) => {
+        state.setCityNameInputStatus('empty');
+        state.addCity(response);
+      })
+      .catch((err) => {
+        console.log(err);
+        state.setCityNameInputStatus('net error');
+      });
+  } else if (state.cityNamesContains(cityName)) {
+    state.setCityNameInputStatus('repeat');
+  }
 };
 
 export const addFormSubmitListener = (state) => {
@@ -16,9 +21,9 @@ export const addFormSubmitListener = (state) => {
 
   formElement.addEventListener('submit', (e) => {
     e.preventDefault();
-    const inputValue = document.querySelector('.cityName').value;
-    console.log(inputValue);
-    makeRequest(state, inputValue);
+    const cityName = document.querySelector('.cityName').value;
+    state.setCityNameInputStatus('make request');
+    makeRequest(state, cityName);
   });
 };
 
@@ -28,7 +33,7 @@ export const addInputListener = (state, cityList) => {
     const currentValue = e.target.value.toLowerCase();
 
     if (currentValue !== '') {
-      state.setCityNameInputStatus('notempty');
+      state.setAutocompleteStatus('not empty');
       const matchesList = cityList.filter(({ name }) => {
         const nameLowerCase = name.toLowerCase();
         return nameLowerCase.indexOf(currentValue) === 0 && nameLowerCase !== currentValue;
@@ -40,9 +45,12 @@ export const addInputListener = (state, cityList) => {
           return [...acc, cityElement];
         }, []);
         state.setAutocompleteList(autocompleteList);
+      } else {
+        state.setAutocompleteStatus('empty');
       }
     } else if (currentValue === '') {
       state.setCityNameInputStatus('empty');
+      state.setAutocompleteStatus('empty');
     }
   });
 };
@@ -54,7 +62,7 @@ export const addAutocompleteLinksEvents = (state) => {
       const ulElement = e.target.parentElement.parentElement;
       for (let i = 0; i <= ulElement.children.length; i += 1) {
         if (ulElement.children[i] === e.target.parentElement) {
-          state.setCityNameInputStatus('select');
+          state.setAutocompleteStatus('select');
           state.setSelectedAutocompleteLinkNumber(i);
         }
       }

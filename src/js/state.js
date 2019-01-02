@@ -41,16 +41,12 @@ export default class State {
   }
 
   addCity(res) {
-    console.log(res);
     const parseredObject = parser(res);
     const { cityName, country } = parseredObject;
     const cityId = _.uniqueId();
 
     this.addCityData(cityId, parseredObject);
     this.addCityName({ cityName, country, id: cityId });
-
-    console.log('CityData');
-    console.log(this.getCityData());
   }
 
   addCityData(id, data) {
@@ -67,6 +63,10 @@ export default class State {
 
   setCityNameInputStatus(value) {
     this.cityNameInputStatus = value;
+  }
+
+  setAutocompleteStatus(value) {
+    this.autocompleteStatus = value;
   }
 
   setSelectedAutocompleteLinkNumber(value) {
@@ -87,5 +87,20 @@ export default class State {
 
   getCityNameInputStatus() {
     return this.cityNameInputStatus;
+  }
+
+  getAutocompleteStatus() {
+    return this.autocompleteStatus;
+  }
+
+  cityNamesContains(city) {
+    const result = this.cityNames.filter(({ cityName }) => {
+      const cityNameLowerCase = cityName.toLowerCase();
+      console.log(city);
+      console.log(cityNameLowerCase);
+      return city.toLowerCase() === cityNameLowerCase;
+    });
+    console.log(result);
+    return result.length > 0;
   }
 }

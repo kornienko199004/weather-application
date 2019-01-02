@@ -1,10 +1,23 @@
+const removeChildren = (node) => {
+  /*
+    ** Удаление всех детей из node
+    */
+  if (node.hasChildNodes()) {
+    const children = node.childNodes;
+    for (let i = children.length - 1; i >= 0; i -= 1) {
+      children[i].remove();
+    }
+  }
+};
+
 export const renderCityList = (data) => {
   const list = document.querySelector('.city-list');
-  const autocompleteTemplateElement = document.getElementById('city-list-template').content;
+  removeChildren(list);
+  const cityListTemplateElement = document.getElementById('city-list-template').content;
   const fragment = document.createDocumentFragment();
 
   data.forEach(({ cityName, country, weather }) => {
-    const node = autocompleteTemplateElement.cloneNode(true);
+    const node = cityListTemplateElement.cloneNode(true);
     const name = node.querySelector('.city__cityName');
     const cityCountry = node.querySelector('.city__country');
     const airTemperature = node.querySelector('.city__temperature');
@@ -17,18 +30,6 @@ export const renderCityList = (data) => {
   });
 
   list.appendChild(fragment);
-};
-
-const removeChildren = (node) => {
-  /*
-    ** Удаление всех детей из node
-    */
-  if (node.hasChildNodes()) {
-    const children = node.childNodes;
-    for (let i = children.length - 1; i >= 0; i -= 1) {
-      children[i].remove();
-    }
-  }
 };
 
 export const renderAutocompleteList = (autocompleteList) => {
@@ -62,4 +63,23 @@ export const renderInputValue = (number, autocompleteList) => {
   const inputElement = document.querySelector('.cityName');
   const { name } = autocompleteList[number];
   inputElement.value = name;
+};
+
+export const blockForm = () => {
+  const inputElement = document.querySelector('.cityName');
+  const submitButton = document.getElementById('request-button');
+  inputElement.disabled = true;
+  submitButton.disabled = true;
+};
+
+export const unblockForm = () => {
+  const inputElement = document.querySelector('.cityName');
+  const submitButton = document.getElementById('request-button');
+  inputElement.disabled = false;
+  submitButton.disabled = false;
+};
+
+export const resetForm = () => {
+  const inputElement = document.querySelector('.cityName');
+  inputElement.value = '';
 };
