@@ -83,3 +83,42 @@ export const resetForm = () => {
   const inputElement = document.querySelector('.cityName');
   inputElement.value = '';
 };
+
+export const cityRepeatLook = () => {
+  const inputElement = document.querySelector('.cityName');
+  inputElement.classList.add('is-invalid');
+  const eventCaption = document.getElementById('event-caption');
+  eventCaption.classList.add('text-danger');
+  eventCaption.classList.remove('text-muted');
+  eventCaption.textContent = 'Input value already exists';
+};
+
+export const netErrorLook = () => {
+  const inputElement = document.querySelector('.cityName');
+  inputElement.classList.add('is-invalid');
+  const eventCaption = document.getElementById('event-caption');
+  eventCaption.classList.add('text-danger');
+  eventCaption.classList.remove('text-muted');
+  eventCaption.textContent = 'Net error or city doesn\'t exists';
+};
+
+export const usualLook = () => {
+  const inputElement = document.querySelector('.cityName');
+  inputElement.classList.remove('is-invalid');
+  inputElement.classList.remove('is-valid');
+
+  const eventCaption = document.getElementById('event-caption');
+  eventCaption.classList.remove('text-danger');
+  eventCaption.classList.remove('text-success');
+  eventCaption.classList.add('text-muted');
+  eventCaption.textContent = 'Input city name';
+};
+
+export const makeRequestLook = () => {
+  const inputElement = document.querySelector('.cityName');
+  inputElement.classList.add('is-valid');
+  const eventCaption = document.getElementById('event-caption');
+  eventCaption.classList.add('text-success');
+  eventCaption.classList.remove('text-muted');
+  eventCaption.textContent = 'Load';
+};

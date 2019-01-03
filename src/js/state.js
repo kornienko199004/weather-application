@@ -6,7 +6,7 @@ export default class State {
     this.cityNameInputStatus = 'empty';
     this.autocompleteStatus = 'empty';
     /*
-    ** формат cityData {
+    ** формат cityData [
       0: {
         cityName: 'name',
         country: 'country',
@@ -16,7 +16,7 @@ export default class State {
           icon: icon,
         },
       },
-    }
+    ]
     */
     this.cityData = [];
     /*
@@ -55,6 +55,22 @@ export default class State {
 
   addCityName(data) {
     this.cityNames = [...this.cityNames, data];
+  }
+
+  removeCity(number) {
+    let idRemoveCity;
+    this.cityNames = [...this.cityNames.filter((item, index) => {
+      if (index === number) {
+        idRemoveCity = item.id;
+      }
+      return index !== number;
+    })];
+    this.cityData = [...this.cityData.filter(({ id }) => idRemoveCity !== id)];
+  }
+
+  removeCityList() {
+    this.cityNames = [];
+    this.cityData = [];
   }
 
   setAutocompleteList(list) {
@@ -96,11 +112,8 @@ export default class State {
   cityNamesContains(city) {
     const result = this.cityNames.filter(({ cityName }) => {
       const cityNameLowerCase = cityName.toLowerCase();
-      console.log(city);
-      console.log(cityNameLowerCase);
       return city.toLowerCase() === cityNameLowerCase;
     });
-    console.log(result);
     return result.length > 0;
   }
 }

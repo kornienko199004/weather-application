@@ -1,4 +1,11 @@
-import { addFormSubmitListener, addInputListener, addAutocompleteLinksEvents } from './logic';
+import {
+  addFormSubmitListener,
+  addInputListener,
+  addAutocompleteLinksEvents,
+  addRemoveCitiesEvents,
+  getCurrentCoordinates,
+  addClearCityListEventListener,
+} from './logic';
 import State from './state';
 import watch from './watch';
 import parserJson from './parserJson';
@@ -9,4 +16,7 @@ export default () => {
   addFormSubmitListener(data);
   addInputListener(data, parserJson());
   addAutocompleteLinksEvents(data);
+  addRemoveCitiesEvents(data);
+  getCurrentCoordinates();
+  addClearCityListEventListener(data);
 };

@@ -5,14 +5,19 @@
     <title>Погода в городах</title>
   </head>
   <body>
-    <div class="jumbotron w-50 container d-flex justify-content-center">
-      <form class="form-group w-75">
-        <input type="text" class="cityName w-75" placeholder="Input city name">
-        <button class="btn btn-primary" id="request-button" type="submit">Add city</button>
-        <ul class="autocomplete-list"></ul>
-      </form>
+    <div class="container">
+      <div class="jumbotron d-flex justify-content-center">
+        <form class="form-group w-75">
+          <h1>Input city</h1>
+          <input type="text" class="cityName w-100 form-control" placeholder="Input city name">
+          <small id="event-caption" class="form-text text-muted mb-3">Input city name</small>
+          <button class="btn btn-primary" id="request-button" type="submit">Add city</button>
+          <ul class="autocomplete-list"></ul>
+        </form>
+      </div>
+      <button id="remove-all-cities" class="btn btn-danger mb-3">Clear the city list</button>
+      <ul class="city-list list-group container w-50"></ul>
     </div>
-    <ul class="city-list"></ul>
 
     <template id="autocomlete-template" style="display: none">
       <li>
@@ -22,16 +27,16 @@
     </template>
 
     <template id="city-list-template" style="display: none">
-      <li class="city-list__item city">
-        <div class="city__wrapper">
-          <p class="city__cityName"></p>
-          <p class="city__country"></p>
+      <li class="city-list__item city list-group-item">
+        <div class="city__wrapper d-flex justify-content-between">
+          <h3 class="city__cityName"></h3>
+          <small class="city__country"></small>
         </div>
-        <div class="city__wrapper">
+        <div class="city__wrapper city__wrapper d-flex justify-content-between">
           <p class="city__temperature"></p>
           <p class="city__description"></p>
         </div>
-        <button class="city__remove">Удалить</button>
+        <button class="city__remove btn btn-danger">Remove</button>
       </li>
     </template>
     <script src="dist/main.js"></script>

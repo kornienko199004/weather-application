@@ -7,6 +7,10 @@ import {
   unblockForm,
   blockForm,
   resetForm,
+  cityRepeatLook,
+  netErrorLook,
+  usualLook,
+  makeRequestLook,
 } from './view';
 
 export default (data) => {
@@ -35,16 +39,21 @@ export default (data) => {
       case 'empty':
         resetForm();
         unblockForm();
+        usualLook();
+        break;
+      case 'not empty':
+        usualLook();
         break;
       case 'make request':
         blockForm();
+        makeRequestLook();
         break;
       case 'net error':
         unblockForm();
+        netErrorLook();
         break;
       case 'repeat':
-        console.log(data.getCityNames());
-        //blockForm();
+        cityRepeatLook();
         break;
       default:
         break;
