@@ -5,6 +5,7 @@ import {
   addAutocompleteLinksEvents,
   addRemoveCitiesEvents,
   addClearCityListEventListener,
+  addDragAndDropListener,
 } from './logic';
 import State from './state';
 import watch from './watch';
@@ -19,4 +20,5 @@ export default () => {
   addAutocompleteLinksEvents(data);
   addRemoveCitiesEvents(data);
   addClearCityListEventListener(data);
+  addDragAndDropListener(data);
 };

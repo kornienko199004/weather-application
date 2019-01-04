@@ -11,6 +11,9 @@ import {
   netErrorLook,
   usualLook,
   makeRequestLook,
+  hideClearButton,
+  showClearButton,
+  emptyRequestLook,
 } from './view';
 
 export default (data) => {
@@ -52,8 +55,19 @@ export default (data) => {
       case 'repeat':
         cityRepeatLook();
         break;
+      case 'empty request':
+        emptyRequestLook();
+        break;
       default:
         break;
+    }
+  });
+
+  watch(data, 'cityDataStatus', () => {
+    if (data.cityDataStatus === 'empty') {
+      hideClearButton();
+    } else if (data.cityDataStatus === 'not empty') {
+      showClearButton();
     }
   });
 };

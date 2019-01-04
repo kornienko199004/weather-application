@@ -5,7 +5,7 @@ export const initCityData = (state) => {
 };
 
 const makeRequest = (state, cityName) => {
-  if (!state.cityNamesContains(cityName)) {
+  if (!state.cityNamesContains(cityName) && cityName !== '') {
     requestToApi(cityName)
       .then((response) => {
         state.setCityNameInputStatus('empty');
@@ -17,6 +17,8 @@ const makeRequest = (state, cityName) => {
       });
   } else if (state.cityNamesContains(cityName)) {
     state.setCityNameInputStatus('repeat');
+  } else if (cityName === '') {
+    state.setCityNameInputStatus('empty request');
   }
 };
 
@@ -103,5 +105,23 @@ export const getCurrentCoordinates = () => {
   geo.getCurrentPosition((position) => {
     console.log(position.coords.latitude);
     console.log(position.coords.longitude);
+  });
+};
+
+export const addDragAndDropListener = (state, cityList) => {
+  document.addEventListener('mousedown', (e) => {
+    const element = e.target;
+    let dragElement;
+    if (element.classList.contains('list-group-item')) {
+      dragElement = element;
+    } else if (element.parentElement && element.parentElement.classList.contains('list-group-item')) {
+      dragElement = element.parentElement;
+    } else {
+      console.log('Элемент не тянется');
+    }
+    console.log(dragElement);
+    if (dragElement) {
+      dragElement.style.position = 'absolute';
+    }
   });
 };

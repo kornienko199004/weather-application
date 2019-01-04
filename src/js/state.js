@@ -5,6 +5,7 @@ export default class State {
   constructor() {
     this.cityNameInputStatus = 'empty';
     this.autocompleteStatus = 'empty';
+    this.cityDataStatus = 'empty';
     /*
     ** формат cityData [
        {
@@ -48,6 +49,7 @@ export default class State {
 
     this.addCityData(cityId, parseredObject);
     this.addCityName({ cityName, country, id: cityId });
+    this.cityDataStatus = 'not empty';
     this.recordCityDataToLocalStorage();
   }
 
@@ -69,11 +71,15 @@ export default class State {
     })];
     this.cityData = [...this.cityData.filter(({ id }) => idRemoveCity !== id)];
     this.recordCityDataToLocalStorage();
+    if (this.cityData.length === 0) {
+      this.cityDataStatus = 'empty';
+    }
   }
 
   removeCityList() {
     this.cityNames = [];
     this.cityData = [];
+    this.cityDataStatus = 'empty';
     this.recordCityDataToLocalStorage();
   }
 
@@ -136,7 +142,7 @@ export default class State {
     if (localStorage.getItem('cityData')) {
       const data = JSON.parse(localStorage.getItem('cityData'));
       this.cityData = data;
-
+      this.cityDataStatus = 'not empty';
       data.forEach(({ cityName, country, id }) => this.addCityName({ cityName, country, id }));
     }
   }

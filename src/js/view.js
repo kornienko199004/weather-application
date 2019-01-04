@@ -102,6 +102,15 @@ export const netErrorLook = () => {
   eventCaption.textContent = 'Net error or city doesn\'t exists';
 };
 
+export const emptyRequestLook = () => {
+  const inputElement = document.querySelector('.cityName');
+  inputElement.classList.add('is-invalid');
+  const eventCaption = document.getElementById('event-caption');
+  eventCaption.classList.add('text-danger');
+  eventCaption.classList.remove('text-muted');
+  eventCaption.textContent = 'Input should be not empty';
+};
+
 export const usualLook = () => {
   const inputElement = document.querySelector('.cityName');
   inputElement.classList.remove('is-invalid');
@@ -121,4 +130,14 @@ export const makeRequestLook = () => {
   eventCaption.classList.add('text-success');
   eventCaption.classList.remove('text-muted');
   eventCaption.textContent = 'Load';
+};
+
+export const showClearButton = () => {
+  const clearButton = document.getElementById('remove-all-cities');
+  clearButton.classList.remove('d-none');
+};
+
+export const hideClearButton = () => {
+  const clearButton = document.getElementById('remove-all-cities');
+  clearButton.classList.add('d-none');
 };
