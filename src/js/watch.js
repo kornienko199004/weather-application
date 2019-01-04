@@ -23,8 +23,6 @@ export default (data) => {
   });
 
   watch(data, 'autocompleteStatus', () => {
-    console.log('autocompleteStatus');
-    console.log(data.getAutocompleteStatus());
     if (data.getAutocompleteStatus() === 'select') {
       removeAutocompleteNode();
       renderInputValue(data.selectedAutocompleteLinkNumber, data.getAutocompleteList());
@@ -34,7 +32,6 @@ export default (data) => {
   });
 
   watch(data, 'cityNameInputStatus', () => {
-    console.log(data.getCityNameInputStatus());
     switch (data.getCityNameInputStatus()) {
       case 'empty':
         resetForm();

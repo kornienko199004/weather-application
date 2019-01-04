@@ -1,5 +1,9 @@
 import requestToApi from './requestToApi';
 
+export const initCityData = (state) => {
+  state.getCityDataFromLocalStorage();
+};
+
 const makeRequest = (state, cityName) => {
   if (!state.cityNamesContains(cityName)) {
     requestToApi(cityName)

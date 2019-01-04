@@ -7,9 +7,10 @@ export default class State {
     this.autocompleteStatus = 'empty';
     /*
     ** формат cityData [
-      0: {
+       {
         cityName: 'name',
         country: 'country',
+        id,
         weather: {
           temperature: temp,
           description: description,
@@ -47,6 +48,7 @@ export default class State {
 
     this.addCityData(cityId, parseredObject);
     this.addCityName({ cityName, country, id: cityId });
+    this.recordCityDataToLocalStorage();
   }
 
   addCityData(id, data) {
@@ -66,11 +68,13 @@ export default class State {
       return index !== number;
     })];
     this.cityData = [...this.cityData.filter(({ id }) => idRemoveCity !== id)];
+    this.recordCityDataToLocalStorage();
   }
 
   removeCityList() {
     this.cityNames = [];
     this.cityData = [];
+    this.recordCityDataToLocalStorage();
   }
 
   setAutocompleteList(list) {
@@ -115,5 +119,25 @@ export default class State {
       return city.toLowerCase() === cityNameLowerCase;
     });
     return result.length > 0;
+  }
+
+  recordCityDataToLocalStorage() {
+    const { localStorage } = window;
+    if (localStorage) {
+      const data = JSON.stringify(this.cityData);
+      localStorage.setItem('cityData', data);
+    } else {
+      console.log('LocalStorage doesn\'t exists');
+    }
+  }
+
+  getCityDataFromLocalStorage() {
+    const { localStorage } = window;
+    if (localStorage.getItem('cityData')) {
+      const data = JSON.parse(localStorage.getItem('cityData'));
+      this.cityData = data;
+
+      data.forEach(({ cityName, country, id }) => this.addCityName({ cityName, country, id }));
+    }
   }
 }
