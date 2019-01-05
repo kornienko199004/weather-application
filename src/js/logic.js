@@ -64,7 +64,7 @@ export const addInputListener = (state, cityList) => {
 
 export const addAutocompleteLinksEvents = (state) => {
   document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('autocomlete__link')) {
+    if (e.target && e.target.classList.contains('autocomlete__link')) {
       e.preventDefault();
       const ulElement = e.target.parentElement.parentElement;
       for (let i = 0; i <= ulElement.children.length; i += 1) {
@@ -109,6 +109,7 @@ export const getCurrentCoordinates = () => {
 };
 
 export const addDragAndDropListener = (state, cityList) => {
+  const rootEl = document.getElementById('city-list');
   document.addEventListener('mousedown', (e) => {
     const element = e.target;
     let dragElement;
@@ -119,9 +120,47 @@ export const addDragAndDropListener = (state, cityList) => {
     } else {
       console.log('Элемент не тянется');
     }
-    console.log(dragElement);
+
     if (dragElement) {
-      dragElement.style.position = 'absolute';
+      e.preventDefault();
+      console.log(dragElement);
+      dragElement.draggable = true;
+
+      document.addEventListener('dragstart', (e) => {
+        const dragEl = e.target; // Запоминаем элемент который будет перемещать
+        const onDragOver = (evt) => {
+          evt.preventDefault();
+          evt.dataTransfer.dropEffect = 'move';
+        
+          const { target } = evt;
+          if (target && target !== dragEl && target.nodeName === 'LI') {
+            rootEl.insertBefore(dragEl, target.nextSibling || target);
+          }
+        };
+        
+        const onDragEnd = (evt) => {
+          evt.preventDefault();
+        
+          dragEl.classList.remove('ghost');
+          rootEl.removeEventListener('dragover', onDragOver, false);
+          rootEl.removeEventListener('dragend', onDragEnd, false);
+        };
+        // Ограничиваем тип перетаскивания
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('Text', dragEl.textContent);
+ 
+ 
+        // Подписываемся на события при dnd
+        rootEl.addEventListener('dragover', onDragOver, false);
+        rootEl.addEventListener('dragend', onDragEnd, false);
+ 
+ 
+        setTimeout(function (){
+            // Если выполнить данное действие без setTimeout, то
+            // перетаскиваемый объект, будет иметь этот класс.
+            dragEl.classList.add('ghost');
+        }, 0)
+    }, false);
     }
   });
 };
