@@ -109,6 +109,10 @@ export const getCurrentCoordinates = () => {
 };
 
 export const addDragAndDropListener = (state, cityList) => {
+  document.addEventListener('drag', () => {
+    return false;
+  }, false);
+
   const rootEl = document.getElementById('city-list');
   document.addEventListener('mousedown', (e) => {
     const element = e.target;
@@ -130,7 +134,7 @@ export const addDragAndDropListener = (state, cityList) => {
         const dragEl = e.target; // Запоминаем элемент который будет перемещать
         const onDragOver = (evt) => {
           evt.preventDefault();
-          evt.dataTransfer.dropEffect = 'move';
+          //evt.dataTransfer.dropEffect = 'move';
         
           const { target } = evt;
           if (target && target !== dragEl && target.nodeName === 'LI') {
@@ -162,5 +166,36 @@ export const addDragAndDropListener = (state, cityList) => {
         }, 0)
     }, false);
     }
+  });
+};
+
+export const dragEvent = () => {
+  const dragList = document.querySelector('.drag-list');
+  [].slice.call(dragList.children).forEach((itemEl) => {
+    itemEl.draggable = true;
+  });
+  let dragged;
+
+  document.addEventListener('dragstart', (e) => {
+    dragged = e.target;
+    e.dataTransfer.setData('text', dragged);
+    e.target.style.opacity = 0.5;
+  });
+
+  dragList.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    const { target } = e;
+    if (target && target !== dragged && target.nodeName === 'LI') {
+      // Сортируем
+      dragList.insertBefore(dragged, dragList.children[0] !== target && target.nextSibling || target);
+    }
+  });
+  document.addEventListener('dragend', (e) => {
+    e.preventDefault();
+    e.target.style.opacity = '';
+  });
+  document.addEventListener('drop', (e) => {
+    e.preventDefault();
   });
 };
