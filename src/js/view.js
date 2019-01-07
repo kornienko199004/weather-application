@@ -16,8 +16,15 @@ export const renderCityList = (data) => {
   const cityListTemplateElement = document.getElementById('city-list-template').content;
   const fragment = document.createDocumentFragment();
 
-  data.forEach(({ cityName, country, weather }) => {
+  data.forEach(({
+    cityName,
+    country,
+    weather,
+    id,
+  }) => {
     const node = cityListTemplateElement.cloneNode(true);
+    const item = node.querySelector('.city');
+    item.dataset.id = id;
     const name = node.querySelector('.city__cityName');
     const cityCountry = node.querySelector('.city__country');
     const airTemperature = node.querySelector('.city__temperature');

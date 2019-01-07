@@ -99,82 +99,17 @@ export const addClearCityListEventListener = (state) => {
   });
 };
 
-export const getCurrentCoordinates = () => {
-  const geo = navigator.geolocation;
-  console.log(geo);
-  geo.getCurrentPosition((position) => {
-    console.log(position.coords.latitude);
-    console.log(position.coords.longitude);
-  });
-};
-
-export const addDragAndDropListener = (state, cityList) => {
-  document.addEventListener('drag', () => {
-    return false;
-  }, false);
-
-  const rootEl = document.getElementById('city-list');
-  document.addEventListener('mousedown', (e) => {
-    const element = e.target;
-    let dragElement;
-    if (element.classList.contains('list-group-item')) {
-      dragElement = element;
-    } else if (element.parentElement && element.parentElement.classList.contains('list-group-item')) {
-      dragElement = element.parentElement;
-    } else {
-      console.log('Элемент не тянется');
-    }
-
-    if (dragElement) {
-      e.preventDefault();
-      console.log(dragElement);
-      dragElement.draggable = true;
-
-      document.addEventListener('dragstart', (e) => {
-        const dragEl = e.target; // Запоминаем элемент который будет перемещать
-        const onDragOver = (evt) => {
-          evt.preventDefault();
-          //evt.dataTransfer.dropEffect = 'move';
-        
-          const { target } = evt;
-          if (target && target !== dragEl && target.nodeName === 'LI') {
-            rootEl.insertBefore(dragEl, target.nextSibling || target);
-          }
-        };
-        
-        const onDragEnd = (evt) => {
-          evt.preventDefault();
-        
-          dragEl.classList.remove('ghost');
-          rootEl.removeEventListener('dragover', onDragOver, false);
-          rootEl.removeEventListener('dragend', onDragEnd, false);
-        };
-        // Ограничиваем тип перетаскивания
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('Text', dragEl.textContent);
- 
- 
-        // Подписываемся на события при dnd
-        rootEl.addEventListener('dragover', onDragOver, false);
-        rootEl.addEventListener('dragend', onDragEnd, false);
- 
- 
-        setTimeout(function (){
-            // Если выполнить данное действие без setTimeout, то
-            // перетаскиваемый объект, будет иметь этот класс.
-            dragEl.classList.add('ghost');
-        }, 0)
-    }, false);
-    }
-  });
-};
-
-export const dragEvent = () => {
-  const dragList = document.querySelector('.drag-list');
-  [].slice.call(dragList.children).forEach((itemEl) => {
-    itemEl.draggable = true;
-  });
+export const addDragAndDropListener = (state) => {
   let dragged;
+  let previousId;
+
+  const cityListElement = document.getElementById('city-list');
+
+  document.addEventListener('mousedown', () => {
+    Array.from(cityListElement.children).forEach((itemEl) => {
+      itemEl.draggable = true;
+    });
+  });
 
   document.addEventListener('dragstart', (e) => {
     dragged = e.target;
@@ -182,18 +117,30 @@ export const dragEvent = () => {
     e.target.style.opacity = 0.5;
   });
 
-  dragList.addEventListener('dragover', (e) => {
+  cityListElement.addEventListener('dragover', (e) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
     const { target } = e;
     if (target && target !== dragged && target.nodeName === 'LI') {
-      // Сортируем
-      dragList.insertBefore(dragged, dragList.children[0] !== target && target.nextSibling || target);
+      let movingElement;
+
+      if (cityListElement.children[0] !== target) {
+        movingElement = target.nextSibling;
+      } else if (cityListElement.children[0] === target) {
+        movingElement = target;
+      }
+
+      previousId = movingElement.dataset.id;
+      cityListElement.insertBefore(dragged, movingElement);
     }
   });
   document.addEventListener('dragend', (e) => {
     e.preventDefault();
+    const newCityListElement = document.getElementById('city-list');
+
     e.target.style.opacity = '';
+    console.log(dragged.dataset.id);
+    console.log(previousId);
   });
   document.addEventListener('drop', (e) => {
     e.preventDefault();

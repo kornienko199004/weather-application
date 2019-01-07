@@ -146,4 +146,29 @@ export default class State {
       data.forEach(({ cityName, country, id }) => this.addCityName({ cityName, country, id }));
     }
   }
+
+  changeCityDataOrder(currentId, previousId, nextId) {
+    console.log(currentId);
+    console.log(previousId);
+    console.log(nextId);
+    const currentElement = this.cityData.filter(({ id }) => id === currentId);
+
+    if (!previousId && nextId) {
+      console.log(1);
+      this.cityData = [...currentElement, ...this.cityData.filter(({ id }) => id !== currentId)];
+    } else if (previousId && !nextId) {
+      console.log(2);
+      this.cityData = [...this.cityData.filter(({ id }) => id !== currentId), ...currentElement];
+    } else if (previousId && nextId) {
+      let previousElementIndex;
+      this.cityData.forEach(({ id }, index) => {
+        if (id === previousId) {
+          previousElementIndex = index;
+        }
+      });
+      const firstPartOfCityData = this.cityData.slice(0, previousElementIndex + 1);
+      const secondPartOfCityData = this.cityData.slice(previousElementIndex + 1);
+      this.cityData = [ ...firstPartOfCityData, currentElement, ...secondPartOfCityData];
+    }
+  }
 }
