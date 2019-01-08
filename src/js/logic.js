@@ -12,7 +12,9 @@ const makeRequest = (state, cityName) => {
         state.addCity(response);
       })
       .catch((err) => {
+        /* eslint-disable */
         console.log(err);
+        /* eslint-enable */
         state.setCityNameInputStatus('net error');
       });
   } else if (state.cityNamesContains(cityName)) {
@@ -101,13 +103,14 @@ export const addClearCityListEventListener = (state) => {
 
 export const addDragAndDropListener = (state) => {
   let dragged;
-  let previousId;
 
   const cityListElement = document.getElementById('city-list');
 
   document.addEventListener('mousedown', () => {
     Array.from(cityListElement.children).forEach((itemEl) => {
+      /* eslint-disable */
       itemEl.draggable = true;
+      /* eslint-enable */
     });
   });
 
@@ -129,8 +132,6 @@ export const addDragAndDropListener = (state) => {
       } else if (cityListElement.children[0] === target) {
         movingElement = target;
       }
-
-      previousId = movingElement.dataset.id;
       cityListElement.insertBefore(dragged, movingElement);
     }
   });
@@ -138,9 +139,21 @@ export const addDragAndDropListener = (state) => {
     e.preventDefault();
     const newCityListElement = document.getElementById('city-list');
 
+    const currentId = dragged.dataset.id;
+    let currentIndex;
+    const childrenCityList = Array.from(newCityListElement.children);
+    childrenCityList.forEach((child, index) => {
+      if (child.dataset.id === currentId) {
+        currentIndex = index;
+      }
+    });
+    const previousIndex = currentIndex === 0 ? null : currentIndex - 1;
+    const nextIndex = currentIndex === childrenCityList.length - 1 ? null : currentIndex + 1;
+
+    const nextId = nextIndex !== null ? childrenCityList[nextIndex].dataset.id : null;
+    const previousId = previousIndex !== null ? childrenCityList[previousIndex].dataset.id : null;
+    state.changeCityDataOrder(Number(currentId), Number(previousId), Number(nextId));
     e.target.style.opacity = '';
-    console.log(dragged.dataset.id);
-    console.log(previousId);
   });
   document.addEventListener('drop', (e) => {
     e.preventDefault();

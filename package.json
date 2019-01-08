@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack-dev-server --mode development --open --host 0.0.0.0",
     "build": "webpack --mode production",
-    "eslint": "eslint --fix ."
+    "eslint": "eslint ."
   },
   "repository": {
     "type": "git",

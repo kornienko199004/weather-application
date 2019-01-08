@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import parser from './parser';
 
 export default class State {
@@ -6,6 +5,7 @@ export default class State {
     this.cityNameInputStatus = 'empty';
     this.autocompleteStatus = 'empty';
     this.cityDataStatus = 'empty';
+    this.cityId = 0;
     /*
     ** формат cityData [
        {
@@ -42,10 +42,16 @@ export default class State {
     this.selectedAutocompleteLinkNumber = -1;
   }
 
+  changeCityId() {
+    this.cityId = this.cityId + 1;
+    const id = this.cityId;
+    return id;
+  }
+
   addCity(res) {
     const parseredObject = parser(res);
     const { cityName, country } = parseredObject;
-    const cityId = _.uniqueId();
+    const cityId = this.changeCityId();
 
     this.addCityData(cityId, parseredObject);
     this.addCityName({ cityName, country, id: cityId });
@@ -62,14 +68,7 @@ export default class State {
   }
 
   removeCity(number) {
-    let idRemoveCity;
-    this.cityNames = [...this.cityNames.filter((item, index) => {
-      if (index === number) {
-        idRemoveCity = item.id;
-      }
-      return index !== number;
-    })];
-    this.cityData = [...this.cityData.filter(({ id }) => idRemoveCity !== id)];
+    this.cityData = [...this.cityData.filter((item, index) => index !== number)];
     this.recordCityDataToLocalStorage();
     if (this.cityData.length === 0) {
       this.cityDataStatus = 'empty';
@@ -79,6 +78,7 @@ export default class State {
   removeCityList() {
     this.cityNames = [];
     this.cityData = [];
+    this.cityId = 0;
     this.cityDataStatus = 'empty';
     this.recordCityDataToLocalStorage();
   }
@@ -120,7 +120,7 @@ export default class State {
   }
 
   cityNamesContains(city) {
-    const result = this.cityNames.filter(({ cityName }) => {
+    const result = this.cityData.filter(({ cityName }) => {
       const cityNameLowerCase = cityName.toLowerCase();
       return city.toLowerCase() === cityNameLowerCase;
     });
@@ -132,8 +132,11 @@ export default class State {
     if (localStorage) {
       const data = JSON.stringify(this.cityData);
       localStorage.setItem('cityData', data);
+      localStorage.setItem('cityId', this.cityId);
     } else {
+      /* eslint-disable */
       console.log('LocalStorage doesn\'t exists');
+      /* eslint-enable */
     }
   }
 
@@ -143,32 +146,28 @@ export default class State {
       const data = JSON.parse(localStorage.getItem('cityData'));
       this.cityData = data;
       this.cityDataStatus = 'not empty';
-      data.forEach(({ cityName, country, id }) => this.addCityName({ cityName, country, id }));
+      this.cityId = Number(localStorage.getItem('cityId'));
     }
   }
 
   changeCityDataOrder(currentId, previousId, nextId) {
-    console.log(currentId);
-    console.log(previousId);
-    console.log(nextId);
     const currentElement = this.cityData.filter(({ id }) => id === currentId);
-
+    const cityDataWithoutCurrentElement = [...this.cityData.filter(({ id }) => id !== currentId)];
     if (!previousId && nextId) {
-      console.log(1);
-      this.cityData = [...currentElement, ...this.cityData.filter(({ id }) => id !== currentId)];
+      this.cityData = [...currentElement, ...cityDataWithoutCurrentElement];
     } else if (previousId && !nextId) {
-      console.log(2);
-      this.cityData = [...this.cityData.filter(({ id }) => id !== currentId), ...currentElement];
+      this.cityData = [...cityDataWithoutCurrentElement, ...currentElement];
     } else if (previousId && nextId) {
       let previousElementIndex;
-      this.cityData.forEach(({ id }, index) => {
+      cityDataWithoutCurrentElement.forEach(({ id }, index) => {
         if (id === previousId) {
           previousElementIndex = index;
         }
       });
-      const firstPartOfCityData = this.cityData.slice(0, previousElementIndex + 1);
-      const secondPartOfCityData = this.cityData.slice(previousElementIndex + 1);
-      this.cityData = [ ...firstPartOfCityData, currentElement, ...secondPartOfCityData];
+      const firstPartOfCityData = cityDataWithoutCurrentElement.slice(0, previousElementIndex + 1);
+      const secondPartOfCityData = cityDataWithoutCurrentElement.slice(previousElementIndex + 1);
+      this.cityData = [...firstPartOfCityData, ...currentElement, ...secondPartOfCityData];
     }
+    this.recordCityDataToLocalStorage();
   }
 }
