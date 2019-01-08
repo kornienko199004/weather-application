@@ -16,7 +16,7 @@
         </form>
       </div>
       <button id="remove-all-cities" class="btn btn-danger mb-3 d-none">Clear the city list</button>
-      <ul id="city-list" class="city-list list-group container w-50"></ul>
+      <ul id="city-list" class="city-list d-flex flex-wrap"></ul>
     </div>
 
     <template id="autocomlete-template" style="display: none">
@@ -27,7 +27,7 @@
     </template>
 
     <template id="city-list-template" style="display: none">
-      <li class="city-list__item city list-group-item">
+      <li class="city-list__item city list-group-item w-50">
         <div class="city__wrapper d-flex justify-content-between">
           <h3 class="city__cityName"></h3>
           <small class="city__country"></small>
