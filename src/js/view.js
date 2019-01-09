@@ -1,5 +1,10 @@
 import removeChildren from './removeChildren';
 
+const inputElement = document.querySelector('.cityName');
+const eventCaption = document.getElementById('event-caption');
+const clearButton = document.getElementById('remove-all-cities');
+const submitButton = document.getElementById('request-button');
+
 export const renderCityList = (data) => {
   const list = document.querySelector('.city-list');
   removeChildren(list);
@@ -57,32 +62,23 @@ export const removeAutocompleteNode = () => {
 };
 
 export const renderInputValue = (number, autocompleteList) => {
-  const inputElement = document.querySelector('.cityName');
   const { name } = autocompleteList[number];
   inputElement.value = name;
 };
 
 export const blockForm = () => {
-  const inputElement = document.querySelector('.cityName');
-  const submitButton = document.getElementById('request-button');
   inputElement.disabled = true;
   submitButton.disabled = true;
 };
 
 export const unblockForm = () => {
-  const inputElement = document.querySelector('.cityName');
-  const submitButton = document.getElementById('request-button');
   inputElement.disabled = false;
   submitButton.disabled = false;
 };
 
 export const resetForm = () => {
-  const inputElement = document.querySelector('.cityName');
   inputElement.value = '';
 };
-
-const inputElement = document.querySelector('.cityName');
-const eventCaption = document.getElementById('event-caption');
 
 const setFauilureLook = (message) => {
   inputElement.classList.add('is-invalid');
@@ -124,11 +120,9 @@ export const makeRequestLook = () => {
 };
 
 export const showClearButton = () => {
-  const clearButton = document.getElementById('remove-all-cities');
   clearButton.classList.remove('d-none');
 };
 
 export const hideClearButton = () => {
-  const clearButton = document.getElementById('remove-all-cities');
   clearButton.classList.add('d-none');
 };
