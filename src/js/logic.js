@@ -1,4 +1,5 @@
 import requestToApi from './requestToApi';
+import findMatches from './findMatches';
 
 export const initCityData = (state) => {
   state.getCityDataFromLocalStorage();
@@ -43,10 +44,7 @@ export const addInputListener = (state, cityList) => {
     if (currentValue !== '') {
       state.setAutocompleteStatus('not empty');
       state.setCityNameInputStatus('not empty');
-      const matchesList = cityList.filter(({ name }) => {
-        const nameLowerCase = name.toLowerCase();
-        return nameLowerCase.indexOf(currentValue) === 0 && nameLowerCase !== currentValue;
-      });
+      const matchesList = findMatches(cityList, currentValue);
 
       if (matchesList.length > 0) {
         const autocompleteList = matchesList.reduce((acc, { name, country }) => {

@@ -1,4 +1,5 @@
 import removeChildren from './removeChildren';
+import findMatches from './findMatches';
 
 export default (namesList) => {
   const inputElement = document.querySelector('.cityName');
@@ -16,11 +17,7 @@ export default (namesList) => {
     const currentValue = e.target.value.toLowerCase();
 
     if (currentValue !== '') {
-      const matchesList = namesList.filter(({ name }) => {
-        const nameLowerCase = name.toLowerCase();
-        return nameLowerCase.indexOf(currentValue) === 0 && nameLowerCase !== currentValue;
-      });
-
+      const matchesList = findMatches(namesList, currentValue);
       matchesList.forEach(({ name, country }) => {
         const node = autocompleteTemplateElement.cloneNode(true);
         const linkElement = node.querySelector('a');
