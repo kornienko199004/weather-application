@@ -15,3 +15,7 @@ The application allows you to view the weather in cities by name.
 ### Application launch
 
 `make develop`
+
+
+### Demo
+[Weather application](http://weather-application.surge.sh/)

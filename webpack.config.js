@@ -1,3 +1,4 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 const conf = {
@@ -7,7 +8,7 @@ const conf = {
   output: {
     path: path.resolve(__dirname, './dist'),
     filename: 'main.js',
-    publicPath: 'dist/',
+    publicPath: '',
   },
   devServer: {
     overlay: true,
@@ -32,6 +33,11 @@ const conf = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'index.html',
+    }),
+  ],
 };
 
 module.exports = (event, options) => {
