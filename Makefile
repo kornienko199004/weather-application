@@ -15,4 +15,4 @@ build:
 	NODE_ENV=production npm run webpack
 
 develop:
-	npm run webpack-serve
+	npm run dev
