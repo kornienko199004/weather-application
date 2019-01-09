@@ -1,14 +1,4 @@
-const removeChildren = (node) => {
-  /*
-    ** Удаление всех детей из node
-    */
-  if (node.hasChildNodes()) {
-    const children = node.childNodes;
-    for (let i = children.length - 1; i >= 0; i -= 1) {
-      children[i].remove();
-    }
-  }
-};
+import removeChildren from './removeChildren';
 
 export default (namesList) => {
   const inputElement = document.querySelector('.cityName');
